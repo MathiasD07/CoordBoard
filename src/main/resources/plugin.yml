@@ -1,0 +1,4 @@
+name: CoorBoard
+version: 1.0
+api-version: 1.19
+main: fr.forky.coordboard.Main
