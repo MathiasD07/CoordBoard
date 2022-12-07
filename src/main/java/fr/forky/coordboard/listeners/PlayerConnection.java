@@ -18,18 +18,18 @@ public class PlayerConnection implements Listener {
 
         final ScoreboardManager scoreboardManager = Bukkit.getScoreboardManager();
         final Scoreboard scoreboard = scoreboardManager.getNewScoreboard();
-        final Objective objective = scoreboard.registerNewObjective("general", "dummy", "Position");
+        final Objective objective = scoreboard.registerNewObjective(player.getName(), "dummy", player.getName());
 
-        objective.setDisplayName(ChatColor.GOLD + "Position");
+        objective.setDisplayName(ChatColor.GOLD + "Position de " + ChatColor.BOLD + player.getDisplayName());
         objective.setDisplaySlot(DisplaySlot.SIDEBAR);
 
-        final Score x = objective.getScore(ChatColor.GREEN + "X");
-        final Score y = objective.getScore(ChatColor.GREEN + "Y");
-        final Score z = objective.getScore(ChatColor.GREEN + "Z");
+        final Score coord = objective.getScore(
+                ChatColor.GREEN + "X: " + (int) playerLocation.getX() +
+                        ChatColor.WHITE + " / " + ChatColor.AQUA + "Y: " + (int) playerLocation.getY() +
+                        ChatColor.WHITE + " / " + ChatColor.YELLOW + "Z: " + (int) playerLocation.getZ()
+        );
 
-        x.setScore((int) playerLocation.getX());
-        y.setScore((int) playerLocation.getY());
-        z.setScore((int) playerLocation.getZ());
+        coord.setScore(0);
 
         player.setScoreboard(scoreboard);
     }
