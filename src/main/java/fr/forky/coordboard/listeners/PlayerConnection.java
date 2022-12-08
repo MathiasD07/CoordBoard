@@ -48,7 +48,7 @@ public class PlayerConnection implements Listener {
 
         final ScoreboardManager scoreboardManager = Bukkit.getScoreboardManager();
         final Scoreboard scoreboard = scoreboardManager.getNewScoreboard();
-        final Objective objective = scoreboard.registerNewObjective(player.getName(), "dummy");
+        final Objective objective = scoreboard.registerNewObjective("general", "dummy", "general");
 
         objective.setDisplayName(ChatColor.GOLD + "Friends Location");
         objective.setDisplaySlot(DisplaySlot.SIDEBAR);
