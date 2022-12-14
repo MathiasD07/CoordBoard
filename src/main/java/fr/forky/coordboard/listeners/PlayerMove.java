@@ -58,7 +58,13 @@ public class PlayerMove implements Listener {
             double angleLook = (Math.atan2(lookVec.getZ(),lookVec.getX()) / 2 / Math.PI * 360 + 360) % 360;
             double angle = (angleDir - angleLook + 360) % 360;
 
-            double dist = currentPlayerLocation.distance(tmpPlayerLocation);
+//            double dist = currentPlayerLocation.distance(tmpPlayerLocation);
+            double dist = vector2Distance(
+                    currentPlayerLocation.getX(),
+                    currentPlayerLocation.getZ(),
+                    tmpPlayerLocation.getX(),
+                    tmpPlayerLocation.getZ()
+                    );
 
             if (currentPlayer == tmpPlayer) {
                 final Score coord = obj.getScore(
@@ -70,7 +76,9 @@ public class PlayerMove implements Listener {
                 coord.setScore(1);
             } else {
                 final Score coord = obj.getScore(
-                        ChatColor.GOLD + tmpPlayer.getName() + ": " +
+                        ChatColor.GOLD + tmpPlayer.getName() +
+                                ChatColor.GOLD + "(" + ChatColor.AQUA +
+                                (int) tmpPlayerLocation.getY() + ChatColor.GOLD + ")" + ": " +
                                 ChatColor.GREEN + (int) dist + " blocks" +
                                 "  " + getArrowDirection(angle)
                 );
@@ -98,5 +106,9 @@ public class PlayerMove implements Listener {
             return ArrowDirection.UP_RIGHT.arrow;
         }
 
+    }
+
+    private double vector2Distance(double x1, double y1, double x2, double y2) {
+        return Math.sqrt(Math.pow(x1 - x2, 2) + Math.pow(y1 - y2, 2));
     }
  }
