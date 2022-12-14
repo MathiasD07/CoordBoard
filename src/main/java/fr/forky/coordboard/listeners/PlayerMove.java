@@ -46,25 +46,29 @@ public class PlayerMove implements Listener {
 
     private void refreshScoreboard(Player currentPlayer, PlayerList plist, Objective obj) {
         Location currentPlayerLocation = currentPlayer.getLocation();
+        double angle = 0;
+        double dist = 0;
 
         for (int i = 0; i < plist.list.size(); i++) {
             Player tmpPlayer = plist.list.get(i);
             final Location tmpPlayerLocation = tmpPlayer.getLocation();
 
-            Vector inBetween = tmpPlayerLocation.clone().subtract(currentPlayerLocation).toVector();
-            Vector lookVec = currentPlayer.getEyeLocation().getDirection();
+            if (currentPlayerLocation.getWorld() == tmpPlayerLocation.getWorld()) {
+                Vector inBetween = tmpPlayerLocation.clone().subtract(currentPlayerLocation).toVector();
+                Vector lookVec = currentPlayer.getEyeLocation().getDirection();
 
-            double angleDir = (Math.atan2(inBetween.getZ(),inBetween.getX()) / 2 / Math.PI * 360 + 360) % 360;
-            double angleLook = (Math.atan2(lookVec.getZ(),lookVec.getX()) / 2 / Math.PI * 360 + 360) % 360;
-            double angle = (angleDir - angleLook + 360) % 360;
+                double angleDir = (Math.atan2(inBetween.getZ(),inBetween.getX()) / 2 / Math.PI * 360 + 360) % 360;
+                double angleLook = (Math.atan2(lookVec.getZ(),lookVec.getX()) / 2 / Math.PI * 360 + 360) % 360;
+                angle = (angleDir - angleLook + 360) % 360;
 
 //            double dist = currentPlayerLocation.distance(tmpPlayerLocation);
-            double dist = vector2Distance(
-                    currentPlayerLocation.getX(),
-                    currentPlayerLocation.getZ(),
-                    tmpPlayerLocation.getX(),
-                    tmpPlayerLocation.getZ()
-                    );
+                dist = vector2Distance(
+                        currentPlayerLocation.getX(),
+                        currentPlayerLocation.getZ(),
+                        tmpPlayerLocation.getX(),
+                        tmpPlayerLocation.getZ()
+                );
+            }
 
             if (currentPlayer == tmpPlayer) {
                 final Score coord = obj.getScore(
@@ -75,14 +79,26 @@ public class PlayerMove implements Listener {
                 );
                 coord.setScore(1);
             } else {
-                final Score coord = obj.getScore(
+                if (currentPlayerLocation.getWorld() == tmpPlayerLocation.getWorld()) {
+                    final Score coord = obj.getScore(
                         ChatColor.GOLD + tmpPlayer.getName() +
-                                ChatColor.GOLD + "(" + ChatColor.AQUA +
-                                (int) tmpPlayerLocation.getY() + ChatColor.GOLD + ")" + ": " +
-                                ChatColor.GREEN + (int) dist + " blocks" +
-                                "  " + getArrowDirection(angle)
-                );
-                coord.setScore(0);
+                            ChatColor.GOLD + "(" + ChatColor.AQUA +
+                            (int) tmpPlayerLocation.getY() + ChatColor.GOLD + ")" + ": " +
+                            ChatColor.GREEN + (int) dist + " blocks" +
+                            "  " + getArrowDirection(angle)
+                    );
+                    coord.setScore(0);
+                } else {
+                    final Score coord = obj.getScore(
+                            ChatColor.GOLD + tmpPlayer.getName() +
+                                    ChatColor.GOLD + "(" + ChatColor.AQUA +
+                                    ChatColor.MAGIC + "00" + ChatColor.GOLD + ")" + ": " +
+                                    ChatColor.GREEN + ChatColor.MAGIC + "000" + ChatColor.GREEN + " blocks" +
+                                    "  " + ChatColor.MAGIC + "00"
+                    );
+                    coord.setScore(0);
+                }
+
             }
         }
     }
