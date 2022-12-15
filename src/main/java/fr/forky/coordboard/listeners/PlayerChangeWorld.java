@@ -1,20 +1,20 @@
 package fr.forky.coordboard.listeners;
 
-import fr.forky.coordboard.PlayerList;
 import fr.forky.coordboard.utils.scoreboards.ScoreboardUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.event.player.PlayerJoinEvent;
-import org.bukkit.scoreboard.*;
+import org.bukkit.event.player.PlayerChangedWorldEvent;
+import org.bukkit.scoreboard.DisplaySlot;
+import org.bukkit.scoreboard.Objective;
+import org.bukkit.scoreboard.Scoreboard;
+import org.bukkit.scoreboard.ScoreboardManager;
 
-public class PlayerConnection implements Listener {
-
+public class PlayerChangeWorld implements Listener {
     @EventHandler
-    public void onPlayerJoin(PlayerJoinEvent event) {
-        PlayerList playerList = PlayerList.getInstance();
+    public void onPlayerChangeWorld(PlayerChangedWorldEvent event) {
         final Player player = event.getPlayer();
 
         //create scoreboard on join
@@ -24,9 +24,6 @@ public class PlayerConnection implements Listener {
         objective.setDisplayName(ChatColor.GOLD + "Friends Location");
         objective.setDisplaySlot(DisplaySlot.SIDEBAR);
         player.setScoreboard(scoreboard);
-
-        // Add player to the custom player list
-        playerList.addPlayer(player);
 
         ScoreboardUtils.updateAllScoreboard();
     }

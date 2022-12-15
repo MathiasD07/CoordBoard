@@ -2,6 +2,7 @@ package fr.forky.coordboard;
 
 import fr.forky.coordboard.commands.CommandBroadcast;
 import fr.forky.coordboard.commands.ListPlayer;
+import fr.forky.coordboard.listeners.PlayerChangeWorld;
 import fr.forky.coordboard.listeners.PlayerConnection;
 import fr.forky.coordboard.listeners.PlayerLeave;
 import fr.forky.coordboard.listeners.PlayerMove;
@@ -24,6 +25,7 @@ public class Main extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new PlayerConnection(), this);
         getServer().getPluginManager().registerEvents(new PlayerMove(), this);
         getServer().getPluginManager().registerEvents(new PlayerLeave(), this);
+        getServer().getPluginManager().registerEvents(new PlayerChangeWorld(), this);
         getCommand("playerlist").setExecutor(new ListPlayer());
     }
 

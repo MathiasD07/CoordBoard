@@ -1,6 +1,7 @@
 package fr.forky.coordboard.listeners;
 
 import fr.forky.coordboard.PlayerList;
+import fr.forky.coordboard.utils.scoreboards.ScoreboardUtils;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerQuitEvent;
@@ -14,5 +15,7 @@ public class PlayerLeave implements Listener {
 
         // remove the player from the custom player list
         playerList.removePlayer(player);
+
+        ScoreboardUtils.updateAllScoreboard();
     }
 }
