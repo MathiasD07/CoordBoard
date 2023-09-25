@@ -9,13 +9,15 @@ build/
 .idea/jarRepositories.xml
 .idea/compiler.xml
 .idea/libraries/
+.idea/workspace.xml
+.idea/shelf/
+.idea/uiDesigner.xml
 *.iws
 *.iml
 *.ipr
 out/
 !**/src/main/**/out/
 !**/src/test/**/out/
-.idea/workspace.xml
 
 ### Eclipse ###
 .apt_generated
@@ -44,3 +46,4 @@ bin/
 
 gradle.properties
 server/
+bundler/

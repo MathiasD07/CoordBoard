@@ -34,13 +34,13 @@ public class PlayerList {
     }
 
     public String getPlayerList() {
-        String str = "";
+        StringBuilder str = new StringBuilder();
 
-        for (int i = 0; i < list.size(); i++) {
-            str = str + list.get(i).getName();
+        for (Player player : list) {
+            str.append(player.getName());
 //            str = str + "\n";
         }
 
-        return str;
+        return str.toString();
     }
 }

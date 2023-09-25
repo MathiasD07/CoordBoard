@@ -7,10 +7,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerChangedWorldEvent;
-import org.bukkit.scoreboard.DisplaySlot;
-import org.bukkit.scoreboard.Objective;
-import org.bukkit.scoreboard.Scoreboard;
-import org.bukkit.scoreboard.ScoreboardManager;
+import org.bukkit.scoreboard.*;
 
 public class PlayerChangeWorld implements Listener {
     @EventHandler
@@ -19,8 +16,9 @@ public class PlayerChangeWorld implements Listener {
 
         //create scoreboard on join
         final ScoreboardManager scoreboardManager = Bukkit.getScoreboardManager();
+        assert scoreboardManager != null;
         final Scoreboard scoreboard = scoreboardManager.getNewScoreboard();
-        final Objective objective = scoreboard.registerNewObjective("general", "dummy", "general");
+        final Objective objective = scoreboard.registerNewObjective("general", Criteria.DUMMY, "general");
         objective.setDisplayName(ChatColor.GOLD + "Friends Location");
         objective.setDisplaySlot(DisplaySlot.SIDEBAR);
         player.setScoreboard(scoreboard);

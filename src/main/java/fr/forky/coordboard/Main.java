@@ -7,8 +7,10 @@ import fr.forky.coordboard.listeners.PlayerConnection;
 import fr.forky.coordboard.listeners.PlayerLeave;
 import fr.forky.coordboard.listeners.PlayerMove;
 import fr.forky.coordboard.utils.commands.SimpleCommand;
-import org.bukkit.craftbukkit.v1_19_R1.CraftServer;
+import org.bukkit.craftbukkit.v1_20_R1.CraftServer;
 import org.bukkit.plugin.java.JavaPlugin;
+
+import java.util.Objects;
 
 public class Main extends JavaPlugin {
     @Override
@@ -26,7 +28,7 @@ public class Main extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new PlayerMove(), this);
         getServer().getPluginManager().registerEvents(new PlayerLeave(), this);
         getServer().getPluginManager().registerEvents(new PlayerChangeWorld(), this);
-        getCommand("playerlist").setExecutor(new ListPlayer());
+        Objects.requireNonNull(getCommand("playerlist")).setExecutor(new ListPlayer());
     }
 
     private void createCommand(SimpleCommand command) {
