@@ -44,34 +44,48 @@ public class ScoreboardUtils {
         }
 
         team.setSuffix(
-                " " + ChatColor.GOLD + "(" + ChatColor.AQUA +
-                        (int) player.getLocation().getY() + ChatColor.GOLD + ")" + ": " +
-                        ChatColor.GREEN + (int) dist + " blocks" +
-                        "  " + getArrowDirection(angle)
+                ChatColor.GOLD + ": "
+                        + ChatColor.RED + getFormattedPlayerHealth(player) + "❤ "
+                        + ChatColor.GREEN + (int) dist + " " + getArrowDirection(angle) + " "
+                        + ChatColor.GOLD + "(" + ChatColor.AQUA + (int) player.getLocation().getY() + ChatColor.GOLD + ")"
         );
     }
 
     static public void setOtherWorldPlayerCoordinate(Scoreboard scoreboard, Player player, Objective objective) {
         String uniquePlayerId = player.getUniqueId().toString();
         Team team = scoreboard.getTeam(uniquePlayerId);
-        String teamKey = ChatColor.WHITE.toString();
+        String teamKey = ChatColor.GOLD + player.getName();
 
         if (null == team) {
             team = scoreboard.registerNewTeam(uniquePlayerId);
             team.addEntry(teamKey);
+            team.setPrefix("");
+            team.setSuffix("");
+
+            objective.getScore(teamKey).setScore(0);
         }
 
-        team.setPrefix(ChatColor.GOLD + player.getName() + " ");
-        team.setSuffix("");
-
-        objective.getScore(teamKey).setScore(0);
-
         team.setSuffix(
-                ChatColor.GOLD + "(" + ChatColor.AQUA +
-                        ChatColor.MAGIC + "00" + ChatColor.GOLD + ")" + ": " +
-                        ChatColor.GREEN + ChatColor.MAGIC + "000" + ChatColor.GREEN + " blocks" +
-                        "  " + ChatColor.MAGIC + "00"
+                ChatColor.GOLD + ": "
+                        + ChatColor.RED + getFormattedPlayerHealth(player) + "❤ "
+                        + ChatColor.GREEN + ChatColor.MAGIC + "000" + ChatColor.GREEN + " " + ChatColor.MAGIC + "00" + " "
+                        + ChatColor.GOLD + "(" + ChatColor.AQUA + ChatColor.MAGIC + "00" + ChatColor.GOLD + ")" + ": "
         );
+    }
+
+    static private String getFormattedPlayerHealth(Player player) {
+        double hearts = player.getHealth() / 2.0;
+        hearts = Math.round(hearts * 2) / 2.0;
+
+        String heartsDisplay;
+
+        if (hearts == (int) hearts) {
+            heartsDisplay = String.format("%d", (int) hearts);
+        } else {
+            heartsDisplay = String.format("%.1f", hearts);
+        }
+
+        return heartsDisplay;
     }
 
     static private String getArrowDirection(double angle) {

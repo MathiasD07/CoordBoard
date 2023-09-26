@@ -2,10 +2,7 @@ package fr.forky.coordboard;
 
 import fr.forky.coordboard.commands.CommandBroadcast;
 import fr.forky.coordboard.commands.ListPlayer;
-import fr.forky.coordboard.listeners.PlayerChangeWorld;
-import fr.forky.coordboard.listeners.PlayerConnection;
-import fr.forky.coordboard.listeners.PlayerLeave;
-import fr.forky.coordboard.listeners.PlayerMove;
+import fr.forky.coordboard.listeners.*;
 import fr.forky.coordboard.utils.commands.SimpleCommand;
 import org.bukkit.craftbukkit.v1_20_R1.CraftServer;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -28,6 +25,8 @@ public class Main extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new PlayerMove(), this);
         getServer().getPluginManager().registerEvents(new PlayerLeave(), this);
         getServer().getPluginManager().registerEvents(new PlayerChangeWorld(), this);
+        getServer().getPluginManager().registerEvents(new EntityDamage(), this);
+        getServer().getPluginManager().registerEvents(new EntityRegainHeath(), this);
         Objects.requireNonNull(getCommand("playerlist")).setExecutor(new ListPlayer());
     }
 

@@ -4,20 +4,13 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="97653810-1b36-4535-91c5-8530d1363d4c" name="Changes" comment="">
+    <list default="true" id="97653810-1b36-4535-91c5-8530d1363d4c" name="Changes" comment="fix: scoreboard flickering">
+      <change afterPath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_25_09_2023_17_36_[Changes]/shelved.patch" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_25_09_2023_17_36__Changes_.xml" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/.idea/uiDesigner.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/build.gradle" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/fr/forky/coordboard/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/fr/forky/coordboard/Main.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/fr/forky/coordboard/PlayerList.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/fr/forky/coordboard/PlayerList.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/fr/forky/coordboard/commands/ListPlayer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/fr/forky/coordboard/commands/ListPlayer.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/fr/forky/coordboard/listeners/PlayerChangeWorld.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/fr/forky/coordboard/listeners/PlayerChangeWorld.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/fr/forky/coordboard/listeners/PlayerConnection.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/fr/forky/coordboard/listeners/PlayerConnection.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/fr/forky/coordboard/listeners/PlayerLeave.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/fr/forky/coordboard/listeners/PlayerLeave.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/fr/forky/coordboard/utils/scoreboards/ScoreboardUtils.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/fr/forky/coordboard/utils/scoreboards/ScoreboardUtils.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/plugin.yml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/plugin.yml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -79,24 +72,27 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
-    "last_opened_file_path": "C:/Users/davma/IdeaProjects/CoordBoard/server",
-    "project.structure.last.edited": "Modules",
-    "project.structure.proportion": "0.0",
-    "project.structure.side.proportion": "0.0",
-    "settings.editor.selected.configurable": "reference.settings.ide.settings.new.ui"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/davma/IdeaProjects/CoordBoard/server&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;Modules&quot;,
+    &quot;project.structure.proportion&quot;: &quot;0.0&quot;,
+    &quot;project.structure.side.proportion&quot;: &quot;0.0&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;reference.settings.ide.settings.new.ui&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="C:\Users\davma\IdeaProjects\CoordBoard\server" />
     </key>
+    <key name="CopyClassDialog.RECENTS_KEY">
+      <recent name="fr.forky.coordboard.listeners" />
+    </key>
   </component>
-  <component name="RunManager" selected="Gradle.CoordBoard [build] (1)">
+  <component name="RunManager" selected="JAR Application.spigot-1.20.1.jar">
     <configuration name="CoordBoard [assemble]" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
       <ExternalSystemSettings>
         <option name="executionName" />
@@ -216,7 +212,14 @@
       <option name="project" value="LOCAL" />
       <updated>1670429840113</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="fix: scoreboard flickering">
+      <created>1695667688715</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1695667688715</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -246,6 +249,7 @@
     <MESSAGE value="chore: init project" />
     <MESSAGE value="feat: create broadcast command" />
     <MESSAGE value="feat: create scoreboard with player position" />
-    <option name="LAST_COMMIT_MESSAGE" value="feat: create scoreboard with player position" />
+    <MESSAGE value="fix: scoreboard flickering" />
+    <option name="LAST_COMMIT_MESSAGE" value="fix: scoreboard flickering" />
   </component>
 </project>
