@@ -3,74 +3,59 @@ package fr.forky.coordboard.utils.scoreboards;
 import fr.forky.coordboard.PlayerList;
 import fr.forky.coordboard.enums.ArrowDirection;
 import fr.forky.coordboard.utils.maths.LocationMath;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.scoreboard.*;
 
 public class ScoreboardUtils {
-    static public void setCurrentPlayerScoreCoordinate(Scoreboard scoreboard, Location playerLocation, Objective objective) {
-        Team team = scoreboard.getTeam("currentPlayer");
-        String teamKey = ChatColor.GOLD.toString();
-
-        if (null == team) {
-            team = scoreboard.registerNewTeam("currentPlayer");
-            team.addEntry(teamKey);
-            team.setPrefix(ChatColor.GOLD + "X/Y/Z: ");
-            team.setSuffix("");
-
-            objective.getScore(teamKey).setScore(1);
-        }
+    static public void setCurrentPlayerScoreCoordinate(Scoreboard scoreboard, Objective objective, Location playerLocation) {
+        Team team = getOrCreateTeam(scoreboard, objective, "CurrentPlayer", ChatColor.GOLD.toString(), 1);
 
         team.setSuffix(
-            ChatColor.GREEN + "" + (int) playerLocation.getX() +
-            ChatColor.WHITE + " / " + ChatColor.AQUA + (int) playerLocation.getY() +
-            ChatColor.WHITE + " / " + ChatColor.YELLOW + (int) playerLocation.getZ()
+                ChatColor.GOLD + "X/Y/Z: "
+                        + ChatColor.GREEN + (int) playerLocation.getX()
+                        + ChatColor.WHITE + " / " + ChatColor.AQUA + (int) playerLocation.getY()
+                        + ChatColor.WHITE + " / " + ChatColor.YELLOW + (int) playerLocation.getZ()
         );
     }
 
-    static public void setForeignPlayerScoreCoordinate(Scoreboard scoreboard, Player player, double angle, double dist, Objective objective) {
-        String uniquePlayerId = player.getUniqueId().toString();
-        Team team = scoreboard.getTeam(uniquePlayerId);
-        String teamKey = ChatColor.GOLD + player.getName();
-
-        if (null == team) {
-            team = scoreboard.registerNewTeam(uniquePlayerId);
-            team.addEntry(teamKey);
-            team.setPrefix("");
-            team.setSuffix("");
-
-            objective.getScore(teamKey).setScore(0);
-        }
+    static public void setForeignPlayerScoreCoordinate(Player foreignPlayer, Scoreboard scoreboard, Objective objective, double angle, double dist) {
+        Team team = getOrCreateTeam(scoreboard, objective, foreignPlayer.getUniqueId().toString(), ChatColor.GOLD + foreignPlayer.getName(), 0);
 
         team.setSuffix(
                 ChatColor.GOLD + ": "
-                        + ChatColor.RED + getFormattedPlayerHealth(player) + "❤ "
+                        + ChatColor.RED + getFormattedPlayerHealth(foreignPlayer) + "❤ "
                         + ChatColor.GREEN + (int) dist + " " + getArrowDirection(angle) + " "
-                        + ChatColor.GOLD + "(" + ChatColor.AQUA + (int) player.getLocation().getY() + ChatColor.GOLD + ")"
+                        + ChatColor.GOLD + "(" + ChatColor.AQUA + (int) foreignPlayer.getLocation().getY() + ChatColor.GOLD + ")"
         );
     }
 
-    static public void setOtherWorldPlayerCoordinate(Scoreboard scoreboard, Player player, Objective objective) {
-        String uniquePlayerId = player.getUniqueId().toString();
-        Team team = scoreboard.getTeam(uniquePlayerId);
-        String teamKey = ChatColor.GOLD + player.getName();
-
-        if (null == team) {
-            team = scoreboard.registerNewTeam(uniquePlayerId);
-            team.addEntry(teamKey);
-            team.setPrefix("");
-            team.setSuffix("");
-
-            objective.getScore(teamKey).setScore(0);
-        }
+    static public void setOtherWorldPlayerCoordinate(Player foreignPlayer, Scoreboard scoreboard, Objective objective) {
+        Team team = getOrCreateTeam(scoreboard, objective, foreignPlayer.getUniqueId().toString(), ChatColor.GOLD + foreignPlayer.getName(), 0);
 
         team.setSuffix(
                 ChatColor.GOLD + ": "
-                        + ChatColor.RED + getFormattedPlayerHealth(player) + "❤ "
+                        + ChatColor.RED + getFormattedPlayerHealth(foreignPlayer) + "❤ "
                         + ChatColor.GREEN + ChatColor.MAGIC + "000" + ChatColor.GREEN + " " + ChatColor.MAGIC + "00" + " "
                         + ChatColor.GOLD + "(" + ChatColor.AQUA + ChatColor.MAGIC + "00" + ChatColor.GOLD + ")" + ": "
         );
+    }
+
+    static public Team getOrCreateTeam(Scoreboard scoreboard, Objective objective, String teamName, String teamKey, Integer score) {
+        Team team = scoreboard.getTeam(teamName);
+
+        if (null == team) {
+            team = scoreboard.registerNewTeam(teamName);
+            team.addEntry(teamKey);
+            team.setPrefix("");
+            team.setSuffix("");
+
+            objective.getScore(teamKey).setScore(score);
+        }
+
+        return team;
     }
 
     static private String getFormattedPlayerHealth(Player player) {
@@ -159,11 +144,11 @@ public class ScoreboardUtils {
             }
 
             if (currentPlayer == foreignPlayer) {
-                setCurrentPlayerScoreCoordinate(scoreboard, tmpPlayerLocation, objective);
+                setCurrentPlayerScoreCoordinate(scoreboard, objective, tmpPlayerLocation);
             } else if (currentPlayerLocation.getWorld() == tmpPlayerLocation.getWorld()) {
-                setForeignPlayerScoreCoordinate(scoreboard, foreignPlayer, angle, dist, objective);
+                setForeignPlayerScoreCoordinate(foreignPlayer, scoreboard, objective, angle, dist);
             } else {
-                setOtherWorldPlayerCoordinate(scoreboard, foreignPlayer, objective);
+                setOtherWorldPlayerCoordinate(foreignPlayer, scoreboard, objective);
             }
         }
     }

@@ -7,3 +7,7 @@ commands:
     description: List the connected players from custom player list class.
     usage: /<command>
     aliases: listp
+  coord:
+    description: Action on custom coordinates
+    usage: /<command> <get|add|go|list> [name]
+    aliases: [cb, coordboard]
