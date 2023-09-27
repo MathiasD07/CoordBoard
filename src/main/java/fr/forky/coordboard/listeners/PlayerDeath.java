@@ -32,7 +32,7 @@ public class PlayerDeath implements Listener {
         clickablePart.setClickEvent(
                 new ClickEvent(
                         ClickEvent.Action.RUN_COMMAND,
-                        "/cb go Mort"
+                        "/coord go Mort"
                 )
         );
         clickablePart.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new Text("Cliquez pour lancer le GPS")));

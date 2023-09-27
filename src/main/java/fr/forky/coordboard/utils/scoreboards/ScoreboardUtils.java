@@ -1,17 +1,20 @@
 package fr.forky.coordboard.utils.scoreboards;
 
+import fr.forky.coordboard.Main;
 import fr.forky.coordboard.PlayerList;
 import fr.forky.coordboard.enums.ArrowDirection;
+import fr.forky.coordboard.enums.WarpType;
 import fr.forky.coordboard.utils.maths.LocationMath;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.scoreboard.*;
 
 public class ScoreboardUtils {
     static public void setCurrentPlayerScoreCoordinate(Scoreboard scoreboard, Objective objective, Location playerLocation) {
-        Team team = getOrCreateTeam(scoreboard, objective, "CurrentPlayer", ChatColor.GOLD.toString(), 1);
+        Team team = getOrCreateTeam(scoreboard, objective, "CurrentPlayer", ChatColor.GOLD.toString(), 3);
 
         team.setSuffix(
                 ChatColor.GOLD + "X/Y/Z: "
@@ -145,11 +148,115 @@ public class ScoreboardUtils {
 
             if (currentPlayer == foreignPlayer) {
                 setCurrentPlayerScoreCoordinate(scoreboard, objective, tmpPlayerLocation);
+                setCurrentPlayerFavoriteCoordinate(currentPlayer, scoreboard, objective);
+                setCurrentPlayerDestinationCoordinate(currentPlayer, scoreboard, objective);
             } else if (currentPlayerLocation.getWorld() == tmpPlayerLocation.getWorld()) {
                 setForeignPlayerScoreCoordinate(foreignPlayer, scoreboard, objective, angle, dist);
             } else {
                 setOtherWorldPlayerCoordinate(foreignPlayer, scoreboard, objective);
             }
         }
+    }
+
+    static private void setCurrentPlayerFavoriteCoordinate(Player player, Scoreboard scoreboard, Objective objective)
+    {
+        FileConfiguration customConfig = Main.getCustomConfig();
+        String uuid = player.getUniqueId().toString();
+        String favoritePath = uuid + "." + WarpType.FAVORITE.type;
+        Team team = getOrCreateTeam(scoreboard, objective, "Favorite", ChatColor.YELLOW.toString(), 2);
+
+        if (!customConfig.contains(favoritePath)) {
+            team.removeEntry(ChatColor.YELLOW.toString());
+            team.unregister();
+            objective.getScore(ChatColor.YELLOW.toString()).setScore(0);
+            scoreboard.resetScores(ChatColor.YELLOW.toString());
+
+            return;
+        }
+
+        String warpName = customConfig.getString(favoritePath);
+        String warpPath = uuid + ".warp." + warpName;
+        String worldName = customConfig.getString(warpPath + ".world");
+        double x = customConfig.getDouble(warpPath + ".x");
+        double y = customConfig.getDouble(warpPath + ".y");
+        double z = customConfig.getDouble(warpPath + ".z");
+        assert worldName != null;
+        Location favoriteLocation = new Location(Bukkit.getWorld(worldName), x, y, z);
+
+        if (player.getWorld() != favoriteLocation.getWorld())
+        {
+            team.setSuffix(
+                    ChatColor.YELLOW + "★ " + warpName + ": "
+                            + ChatColor.GREEN + ChatColor.MAGIC + "000" + ChatColor.GREEN + " " + ChatColor.MAGIC + "00" + " "
+                            + ChatColor.GOLD + "(" + ChatColor.AQUA + ChatColor.MAGIC + "00" + ChatColor.GOLD + ")"
+            );
+
+            return;
+        }
+
+        double angle = LocationMath.angleLookToPoint(player, favoriteLocation);
+        double dist = LocationMath.vector2Distance(
+                player.getLocation().getX(),
+                player.getLocation().getZ(),
+                favoriteLocation.getX(),
+                favoriteLocation.getZ()
+        );
+
+        team.setSuffix(
+                ChatColor.YELLOW + "★ " + warpName + ": "
+                        + ChatColor.GREEN + (int) dist + " " + getArrowDirection(angle)
+                        + ChatColor.GOLD + " (" + ChatColor.AQUA + (int) favoriteLocation.getY() + ChatColor.GOLD + ")"
+        );
+    }
+
+    static private void setCurrentPlayerDestinationCoordinate(Player player, Scoreboard scoreboard, Objective objective)
+    {
+        FileConfiguration customConfig = Main.getCustomConfig();
+        String uuid = player.getUniqueId().toString();
+        String destinationPath = uuid + "." + WarpType.DESTINATION.type;
+        Team team = getOrCreateTeam(scoreboard, objective, "Destination", ChatColor.BLUE.toString(), 1);
+
+        if (!customConfig.contains(destinationPath)) {
+            team.removeEntry(ChatColor.BLUE.toString());
+            team.unregister();
+            objective.getScore(ChatColor.BLUE.toString()).setScore(0);
+            scoreboard.resetScores(ChatColor.BLUE.toString());
+
+            return;
+        }
+
+        String warpName = customConfig.getString(destinationPath);
+        String warpPath = uuid + ".warp." + warpName;
+        String worldName = customConfig.getString(warpPath + ".world");
+        double x = customConfig.getDouble(warpPath + ".x");
+        double y = customConfig.getDouble(warpPath + ".y");
+        double z = customConfig.getDouble(warpPath + ".z");
+        assert worldName != null;
+        Location destinationLocation = new Location(Bukkit.getWorld(worldName), x, y, z);
+
+        if (player.getWorld() != destinationLocation.getWorld())
+        {
+            team.setSuffix(
+                    ChatColor.BLUE + "✈ " + warpName + ": "
+                            + ChatColor.GREEN + ChatColor.MAGIC + "000" + ChatColor.GREEN + " " + ChatColor.MAGIC + "00" + " "
+                            + ChatColor.GOLD + "(" + ChatColor.AQUA + ChatColor.MAGIC + "00" + ChatColor.GOLD + ")"
+            );
+
+            return;
+        }
+
+        double angle = LocationMath.angleLookToPoint(player, destinationLocation);
+        double dist = LocationMath.vector2Distance(
+                player.getLocation().getX(),
+                player.getLocation().getZ(),
+                destinationLocation.getX(),
+                destinationLocation.getZ()
+        );
+
+        team.setSuffix(
+                ChatColor.BLUE + "✈ " + warpName + ": "
+                        + ChatColor.GREEN + (int) dist + " " + getArrowDirection(angle)
+                        + ChatColor.GOLD + " (" + ChatColor.AQUA + (int) destinationLocation.getY() + ChatColor.GOLD + ")"
+        );
     }
 }

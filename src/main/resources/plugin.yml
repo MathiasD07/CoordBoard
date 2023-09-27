@@ -9,5 +9,5 @@ commands:
     aliases: listp
   coord:
     description: Action on custom coordinates
-    usage: /<command> <get|add|list|delete|go> [name]
-    aliases: [cb, coordboard]
+    usage: /<command> <get|add|list|delete|go|favorite> [name]
+    aliases: [c, cb, coordboard]

@@ -16,7 +16,7 @@ import java.util.Objects;
 
 public class Main extends JavaPlugin {
     private File customConfigFile;
-    private FileConfiguration customConfig;
+    private static FileConfiguration customConfig = null;
     private CoordManager coordManager;
 
     @Override
@@ -47,16 +47,16 @@ public class Main extends JavaPlugin {
             saveResource("coords.yml", false);
         }
 
-        this.customConfig = YamlConfiguration.loadConfiguration(customConfigFile);
+        customConfig = YamlConfiguration.loadConfiguration(customConfigFile);
     }
 
-    public FileConfiguration getCustomConfig() {
-        return this.customConfig;
+    public static FileConfiguration getCustomConfig() {
+        return customConfig;
     }
 
     public void saveCustomConfig() {
         try {
-            this.customConfig.save(customConfigFile);
+            customConfig.save(customConfigFile);
         } catch (IOException e) {
             System.out.println("An error occurred when trying to save custom config file");
         }
