@@ -163,13 +163,16 @@ public class ScoreboardUtils {
         FileConfiguration customConfig = Main.getCustomConfig();
         String uuid = player.getUniqueId().toString();
         String favoritePath = uuid + "." + WarpType.FAVORITE.type;
-        Team team = getOrCreateTeam(scoreboard, objective, "Favorite", ChatColor.YELLOW.toString(), 2);
 
         if (!customConfig.contains(favoritePath)) {
-            team.removeEntry(ChatColor.YELLOW.toString());
-            team.unregister();
-            objective.getScore(ChatColor.YELLOW.toString()).setScore(0);
-            scoreboard.resetScores(ChatColor.YELLOW.toString());
+            Team favoriteTeam = scoreboard.getTeam("Favorite");
+
+            if (null != favoriteTeam) {
+                favoriteTeam.removeEntry(ChatColor.YELLOW.toString());
+                favoriteTeam.unregister();
+                objective.getScore(ChatColor.YELLOW.toString()).setScore(0);
+                scoreboard.resetScores(ChatColor.YELLOW.toString());
+            }
 
             return;
         }
@@ -182,6 +185,8 @@ public class ScoreboardUtils {
         double z = customConfig.getDouble(warpPath + ".z");
         assert worldName != null;
         Location favoriteLocation = new Location(Bukkit.getWorld(worldName), x, y, z);
+
+        Team team = getOrCreateTeam(scoreboard, objective, "Favorite", ChatColor.YELLOW.toString(), 2);
 
         if (player.getWorld() != favoriteLocation.getWorld())
         {
@@ -214,13 +219,16 @@ public class ScoreboardUtils {
         FileConfiguration customConfig = Main.getCustomConfig();
         String uuid = player.getUniqueId().toString();
         String destinationPath = uuid + "." + WarpType.DESTINATION.type;
-        Team team = getOrCreateTeam(scoreboard, objective, "Destination", ChatColor.BLUE.toString(), 1);
 
         if (!customConfig.contains(destinationPath)) {
-            team.removeEntry(ChatColor.BLUE.toString());
-            team.unregister();
-            objective.getScore(ChatColor.BLUE.toString()).setScore(0);
-            scoreboard.resetScores(ChatColor.BLUE.toString());
+            Team destinationTeam = scoreboard.getTeam("Destination");
+
+            if (null != destinationTeam) {
+                destinationTeam.removeEntry(ChatColor.BLUE.toString());
+                destinationTeam.unregister();
+                objective.getScore(ChatColor.BLUE.toString()).setScore(0);
+                scoreboard.resetScores(ChatColor.BLUE.toString());
+            }
 
             return;
         }
@@ -233,6 +241,8 @@ public class ScoreboardUtils {
         double z = customConfig.getDouble(warpPath + ".z");
         assert worldName != null;
         Location destinationLocation = new Location(Bukkit.getWorld(worldName), x, y, z);
+
+        Team team = getOrCreateTeam(scoreboard, objective, "Destination", ChatColor.BLUE.toString(), 1);
 
         if (player.getWorld() != destinationLocation.getWorld())
         {
