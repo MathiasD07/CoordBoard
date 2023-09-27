@@ -40,7 +40,11 @@ public class PlayerMove implements Listener {
                     destinationLocation.getZ()
             );
 
-            if (dist <= 1.5 && playerLocation.getY() == destinationLocation.getY()) {
+            if (
+                    dist <= 1.5
+                            && playerLocation.getY() == destinationLocation.getY()
+                            && playerLocation.getWorld() == destinationLocation.getWorld()
+            ) {
                 player.sendMessage("Vous êtes arrivé à destination !");
                 coordManager.removeSpecialWarp(player, WarpType.DESTINATION);
             }
