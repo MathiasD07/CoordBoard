@@ -39,8 +39,13 @@ public class CoordCommand implements CommandExecutor {
             };
         }
 
-        if (args.length == 1 && args[0].equalsIgnoreCase("list")) {
-            return executeListCommand(player);
+        if (args.length == 1) {
+            return switch (args[0].toLowerCase()) {
+                case "list" -> executeListCommand(player);
+                case "unfavorite" -> executeUnfavoriteCommand(player);
+                case "stop" -> executeStopCommand(player);
+                default -> false;
+            };
         }
 
         return false;
@@ -150,6 +155,38 @@ public class CoordCommand implements CommandExecutor {
 
         ScoreboardUtils.updateAllScoreboard();
         player.sendMessage("Coordonnées " + ChatColor.BOLD + name + ChatColor.RESET + " ajoutées en tant que destination avec succès ! Bon voyage ;)");
+
+        return true;
+    }
+
+    private boolean executeUnfavoriteCommand(Player player)
+    {
+        boolean isFavoriteDeleted = coordManager.removeSpecialWarp(player, WarpType.FAVORITE);
+
+        if (!isFavoriteDeleted) {
+            player.sendMessage(ChatColor.RED + "Vous n'avez pas de favori.");
+
+            return true;
+        }
+
+        ScoreboardUtils.updateAllScoreboard();
+        player.sendMessage("Le favori a été supprimée avec succès !");
+
+        return true;
+    }
+
+    private boolean executeStopCommand(Player player)
+    {
+        boolean isFavoriteDeleted = coordManager.removeSpecialWarp(player, WarpType.DESTINATION);
+
+        if (!isFavoriteDeleted) {
+            player.sendMessage(ChatColor.RED + "Vous n'avez pas de destination en cours.");
+
+            return true;
+        }
+
+        ScoreboardUtils.updateAllScoreboard();
+        player.sendMessage("La destination a été supprimée avec succès !");
 
         return true;
     }

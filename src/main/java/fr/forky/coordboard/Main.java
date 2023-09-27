@@ -17,7 +17,7 @@ import java.util.Objects;
 public class Main extends JavaPlugin {
     private File customConfigFile;
     private static FileConfiguration customConfig = null;
-    private CoordManager coordManager;
+    private static CoordManager coordManager;
 
     @Override
     public void onEnable() {
@@ -25,7 +25,7 @@ public class Main extends JavaPlugin {
 
         createCustomConfig();
 
-        this.coordManager = new CoordManager(this);
+        coordManager = new CoordManager(this);
 
         getServer().getPluginManager().registerEvents(new PlayerConnection(), this);
         getServer().getPluginManager().registerEvents(new PlayerMove(), this);
@@ -62,8 +62,8 @@ public class Main extends JavaPlugin {
         }
     }
 
-    public CoordManager getCoordManager() {
-        return this.coordManager;
+    public static CoordManager getCoordManager() {
+        return coordManager;
     }
 
     private void createCommand(SimpleCommand command) {

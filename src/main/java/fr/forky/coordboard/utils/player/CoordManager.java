@@ -50,6 +50,22 @@ public class CoordManager {
         return true;
     }
 
+    public boolean removeSpecialWarp(Player player, WarpType warpType)
+    {
+        String uuid = player.getUniqueId().toString();
+
+        String spacialWarpPath = uuid + "." + warpType.type;
+
+        if (this.customConfig.contains(spacialWarpPath)) {
+            this.customConfig.set(spacialWarpPath, null);
+            plugin.saveCustomConfig();
+
+            return true;
+        }
+
+        return false;
+    }
+
     public Location getCoord(Player player, String name)
     {
         String uuid = player.getUniqueId().toString();
