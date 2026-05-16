@@ -1,13 +1,12 @@
 package fr.forky.coordboard;
 
 import fr.forky.coordboard.commands.CoordCommand;
+import fr.forky.coordboard.commands.CoordTabCompleter;
 import fr.forky.coordboard.commands.ListPlayer;
 import fr.forky.coordboard.listeners.*;
-import fr.forky.coordboard.utils.commands.SimpleCommand;
 import fr.forky.coordboard.utils.player.CoordManager;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
-import org.bukkit.craftbukkit.v1_20_R1.CraftServer;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
@@ -21,7 +20,7 @@ public class Main extends JavaPlugin {
 
     @Override
     public void onEnable() {
-        System.out.println("ENABLING COORDBOARD V1...");
+        getLogger().info("ENABLING COORDBOARD V1...");
 
         createCustomConfig();
 
@@ -35,9 +34,11 @@ public class Main extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new EntityRegainHeath(), this);
         getServer().getPluginManager().registerEvents(new PlayerDeath(coordManager), this);
         Objects.requireNonNull(getCommand("playerlist")).setExecutor(new ListPlayer());
-        Objects.requireNonNull(getCommand("coord")).setExecutor(new CoordCommand(coordManager));
+        CoordCommand coordCommand = new CoordCommand(coordManager);
+        Objects.requireNonNull(getCommand("coord")).setExecutor(coordCommand);
+        Objects.requireNonNull(getCommand("coord")).setTabCompleter(new CoordTabCompleter(coordManager));
 
-        System.out.println("COORDBOARD V1 ENABLED !");
+        getLogger().info("COORDBOARD V1 ENABLED !");
     }
 
     private void createCustomConfig() {
@@ -55,19 +56,16 @@ public class Main extends JavaPlugin {
     }
 
     public void saveCustomConfig() {
-        try {
-            customConfig.save(customConfigFile);
-        } catch (IOException e) {
-            System.out.println("An error occurred when trying to save custom config file");
-        }
+        getServer().getScheduler().runTaskAsynchronously(this, () -> {
+            try {
+                customConfig.save(customConfigFile);
+            } catch (IOException e) {
+                getLogger().severe("An error occurred when trying to save custom config file");
+            }
+        });
     }
 
     public static CoordManager getCoordManager() {
         return coordManager;
-    }
-
-    private void createCommand(SimpleCommand command) {
-        CraftServer server = (CraftServer) getServer();
-        server.getCommandMap().register(getName(), command);
     }
 }

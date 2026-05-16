@@ -1,11 +1,11 @@
 package fr.forky.coordboard.listeners;
 
 import fr.forky.coordboard.utils.player.CoordManager;
-import net.md_5.bungee.api.chat.ClickEvent;
-import net.md_5.bungee.api.chat.HoverEvent;
-import net.md_5.bungee.api.chat.TextComponent;
-import net.md_5.bungee.api.chat.hover.content.Text;
-import org.bukkit.Bukkit;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.event.ClickEvent;
+import net.kyori.adventure.text.event.HoverEvent;
+import net.kyori.adventure.text.format.NamedTextColor;
+import net.kyori.adventure.text.format.TextDecoration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -24,24 +24,17 @@ public class PlayerDeath implements Listener {
 
         coordManager.addCoord(player, "Mort");
 
-        TextComponent messagePart1 = new TextComponent("Vous êtes morts ! Souhaitez-vous lancer le GPS vers le lieu de votre mort ? ");
-        messagePart1.setBold(true);
-        messagePart1.setColor(net.md_5.bungee.api.ChatColor.DARK_RED);
+        Component message = Component.text("Vous êtes morts ! Souhaitez-vous lancer le GPS vers le lieu de votre mort ? ")
+                .color(NamedTextColor.DARK_RED)
+                .decorate(TextDecoration.BOLD)
+                .append(
+                        Component.text("✓")
+                                .color(NamedTextColor.GREEN)
+                                .decorate(TextDecoration.BOLD)
+                                .clickEvent(ClickEvent.runCommand("/coord go Mort"))
+                                .hoverEvent(HoverEvent.showText(Component.text("Cliquez pour lancer le GPS")))
+                );
 
-        TextComponent clickablePart = new TextComponent("✓");
-        clickablePart.setClickEvent(
-                new ClickEvent(
-                        ClickEvent.Action.RUN_COMMAND,
-                        "/coord go Mort"
-                )
-        );
-        clickablePart.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new Text("Cliquez pour lancer le GPS")));
-
-        clickablePart.setBold(true);
-        clickablePart.setColor(net.md_5.bungee.api.ChatColor.GREEN);
-
-        messagePart1.addExtra(clickablePart);
-
-        player.spigot().sendMessage(messagePart1);
+        player.sendMessage(message);
     }
- }
+}

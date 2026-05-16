@@ -1,5 +1,6 @@
 package fr.forky.coordboard;
 
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
 import java.util.Iterator;
@@ -28,7 +29,7 @@ public class PlayerList {
         int exist = list.search(player);
 
         if (exist >= 0) {
-            System.out.println("player " + player.getName() + " is removed from the list !");
+            Bukkit.getLogger().info("player " + player.getName() + " is removed from the list !");
             list.remove(player);
         }
     }
